@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics Jupyter Notebooks Collection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: var(--light-color);
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin: 3rem 0 2rem;
+            color: var(--secondary-color);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
+        
+        .category-title {
+            margin: 3rem 0 1.5rem;
+            padding-left: 1rem;
+            border-left: 5px solid var(--primary-color);
+            color: var(--secondary-color);
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-header.mechanics { background: linear-gradient(rgba(52, 152, 219, 0.8), rgba(52, 152, 219, 0.4)), url('https://source.unsplash.com/random/600x400/?physics,mechanics') center/cover no-repeat; }
+        .card-header.electromagnetism { background: linear-gradient(rgba(155, 89, 182, 0.8), rgba(155, 89, 182, 0.4)), url('https://source.unsplash.com/random/600x400/?electricity,magnetism') center/cover no-repeat; }
+        .card-header.thermal { background: linear-gradient(rgba(231, 76, 60, 0.8), rgba(231, 76, 60, 0.4)), url('https://source.unsplash.com/random/600x400/?heat,thermal') center/cover no-repeat; }
+        .card-header.optics { background: linear-gradient(rgba(46, 204, 113, 0.8), rgba(46, 204, 113, 0.4)), url('https://source.unsplash.com/random/600x400/?light,optics') center/cover no-repeat; }
+        .card-header.advanced { background: linear-gradient(rgba(243, 156, 18, 0.8), rgba(243, 156, 18, 0.4)), url('https://source.unsplash.com/random/600x400/?quantum,physics') center/cover no-repeat; }
+        
+        .card-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 2rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .card-text {
+            color: #666;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary {
+            background-color: #7f8c8d;
+            margin-left: 0.5rem;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #95a5a6;
+        }
+        
+        .intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .intro p {
+            margin-bottom: 1.5rem;
+        }
+        
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+        
+        .footer-links {
+            margin: 1rem 0;
+        }
+        
+        .footer-links a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Physics Jupyter Notebooks</h1>
+            <p>Interactive learning resources for physics concepts from mechanics to quantum physics</p>
+        </div>
+    </header>
+    
+    <main>
+        <div class="intro">
+            <h2>Welcome to my Physics Notebooks Collection</h2>
+            <p>This collection of Jupyter notebooks provides interactive explorations of various physics concepts. Whether you're a student, educator, or physics enthusiast, these notebooks offer hands-on experiences with physics concepts through code.</p>
+            <p>Click on any notebook below to explore the concepts and simulations!</p>
+        </div>
+        
+        <h2 class="category-title"><i class="fas fa-atom"></i> Classical Mechanics</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header mechanics">
+                    <div class="card-icon"><i class="fas fa-rocket"></i></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Numerical Integration Methods</h3>
+                    <p class="card-text">Learn various numerical integration techniques for solving physics problems.</p>
+                    <a href="Intro%20Physics%20I%20with%20Calculus/Numerical%20Integration.ipynb" class="btn" target="_blank">View Notebook</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header mechanics">
+                    <div class="card-icon"><i class="fas fa-meteor"></i></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Hard Sphere Gas Models</h3>
+                    <p class="card-text">Simulate particle collisions in a hard sphere gas model.</p>
+                    <a href="Thermal%20Physics/HardSphereGas.ipynb" class="btn" target="_blank">View Notebook</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header mechanics">
+                    <div class="card-icon"><i class="fas fa-square-root-alt"></i></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Differential Equations in Physics</h3>
+                    <p class="card-text">Solve differential equations common in classical mechanics.</p>
+                    <a href="Classical%20Mechanics/solvingDE.ipynb" class="btn" target="_blank">View Notebook</a>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="category-title"><i class="fas fa-bolt"></i> Electromagnetism</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header electromagnetism">
+                    <div class="card-icon"><i class="fas fa-magnet"></i></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Cyclotron Motion</h3>
+                    <p class="card-text">Explore the motion of charged particles in magnetic fields.</p>
+                    <a href="Electromagnetism/CyclotronMotion.ipynb" class="btn" target="_blank">View Notebook</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header electromagnetism">
+                    <div class="card-icon"><i class="fas fa-project-diagram"></i></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Kirchhoff's Laws</h3>
+                    <p class="card-text">Analyze electrical circuits using Kirchhoff's laws.</p>
+                    <a href="Electromagnetism/KirchhoffsLab.ipynb" class="btn" target="_blank">View Notebook</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header electromagnetism">
+                    <div class="card-icon"><i class="fas fa-compress-arrows-alt"></i></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Biot-Savart Law</h3>
+                    <p class="card-text">Calculate magnetic fields using the Biot-Savart law.</p>
+                    <a href="Electromagnetism/BiotSavartLaw.ipynb" class="btn" target="_blank">View Notebook</a>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="category-title"><i class="fas fa-fire"></i> Thermal Physics</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header thermal">
+                    <div class="card-icon"><i class="fas fa-temperature-high"></i></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Hard Sphere Gas Simulation</h3>
+                    <p class="card-text">Interactive simulation of a hard sphere gas model.</p>
+                    <a href="Thermal%20Physics/HardSphereGas.ipynb" class="btn" target="_blank">View Notebook</a>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="category-title"><i class="fas fa-glasses"></i> Optics & Waves</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header optics">
+                    <div class="card-icon"><i class="fas fa-wave-square"></i></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Complex Numbers in Wave Physics</h3>
+                    <p class="card-text">Understand how complex numbers are used to describe waves.</p>
+                    <a href="Optics/ComplexNumbers.ipynb" class="btn" target="_blank">View Notebook</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header optics">
+                    <div class="card-icon"><i class="fas fa-prism"></i></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Polarization Problem Solutions</h3>
+                    <p class="card-text">Worked examples of polarization problems in optics.</p>
+                    <a href="Optics/AnswerProblem1.ipynb" class="btn" target="_blank">View Notebook</a>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="category-title"><i class="fas fa-laptop-code"></i> Coding & Tools</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header advanced">
+                    <div class="card-icon"><i class="fas fa-code"></i></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Markdown & LaTeX Tutorial</h3>
+                    <p class="card-text">Learn how to use Markdown and LaTeX in Jupyter notebooks.</p>
+                    <a href="Intro%20Physics%20I%20with%20Calculus/03%20Markdown%20and%20Latex.ipynb" class="btn" target="_blank">View Notebook</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header advanced">
+                    <div class="card-icon"><i class="fas fa-calculator"></i></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Numerical Methods: Least Squares</h3>
+                    <p class="card-text">Implement least squares regression for data analysis.</p>
+                    <a href="Advanced%20Lab/Least_square_regression.ipynb" class="btn" target="_blank">View Notebook</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header advanced">
+                    <div class="card-icon"><i class="fas fa-table"></i></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Working with NumPy</h3>
+                    <p class="card-text">Introduction to numerical computation with NumPy.</p>
+                    <a href="Intro%20Physics%20I%20with%20Calculus/07%20Numerical%20computation.ipynb" class="btn" target="_blank">View Notebook</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>Created by Martin Veillette</p>
+        <div class="footer-links">
+            <a href="https://github.com/veillette/jupyterNotebooks" target="_blank"><i class="fab fa-github"></i> GitHub Repository</a>
+            <a href="https://github.com/veillette" target="_blank"><i class="fab fa-github-alt"></i> GitHub Profile</a>
+        </div>
+    </footer>
+</body>
+</html>
